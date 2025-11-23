@@ -18,4 +18,5 @@ type Audio struct {
 
 	Audio      string       `json:"audio" bson:"audio"`         // S3 audio URL
 	Labels   []string `json:"labels" bson:"labels"`   // 音频标签
+	State    int      `json:"state" bson:"state"`     // 状态：1可见，0删除（软删除）
 }

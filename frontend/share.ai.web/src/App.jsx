@@ -8,7 +8,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <main className="min-h-[calc(100vh-64px)] bg-gray-900">
+      <main className="w-full min-h-[calc(100vh-64px)] bg-gray-900">
         <Routes>
           <Route path="/" element={<AudioSharePage />} />
           <Route path="/about" element={<AboutPage />} />

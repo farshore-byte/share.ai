@@ -28,3 +28,8 @@ func GetAudioByID(id string) (*models.Audio, error) {
 func SearchAudioByTag(category, value string) ([]*models.Audio, error) {
 	return database.SearchAudioByTag(category, value)
 }
+
+// SoftDeleteAudio 更新音频状态为0（软删除）
+func SoftDeleteAudio(id string) error {
+	return database.UpdateAudioState(id, 0)
+}

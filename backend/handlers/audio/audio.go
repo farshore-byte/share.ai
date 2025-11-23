@@ -129,6 +129,7 @@ func UploadAudioHandler(c *gin.Context) {
 		Audio:    audioURL,
 		Cover:    coverURL,
 		Labels:   req.Labels,
+		State:    1, // 新上传的音频可见
 	}
 
 	// ------------------------------
@@ -149,6 +150,7 @@ func ListAudiosHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get audio list: " + err.Error()})
 		return
 	}
+	//fmt.Printf("handler audios: %v", audios)
 	c.JSON(http.StatusOK, audios)
 }
 
@@ -201,4 +203,24 @@ func GetAudioStatsHandler(c *gin.Context) {
 		"last_download":  nil,
 	}
 	c.JSON(http.StatusOK, stats)
+}
+
+// SoftDeleteAudioHandler 软删除音频（设置state为0）
+
+type DeleteReq struct {
+	ID string `json:"id"`
+}
+
+func SoftDeleteAudioHandler(c *gin.Context) {
+	var req DeleteReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		utils.Fail(c, "invalid request: "+err.Error())
+		return
+	}
+	err := audioService.SoftDeleteAudio(req.ID)
+	if err != nil {
+		utils.Fail(c, "Failed to soft delete audio: " + err.Error())
+		return
+	}
+	utils.Success(c, gin.H{"message": "Audio soft deleted successfully"})
 }
